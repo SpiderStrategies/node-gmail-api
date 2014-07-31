@@ -35,15 +35,21 @@ Gmail.prototype.messages = function (q, opts) {
     if (err) {
       return result.emit('error', err)
     }
+    var body = body.messages.map(function (m) {
+      return {
+        'Content-Type': 'application/http',
+        body: 'GET ' + api + '/gmail/v1/users/me/messages/' + m.id + '\n'
+      }
+    })
+
+    if (opts.max) {
+      body.length = opts.max
+    }
+
     var r = request({
       method: 'POST',
       url: api + '/batch',
-      multipart: body.messages.map(function (m) {
-        return {
-          'Content-Type': 'application/http',
-          body: 'GET ' + api + '/gmail/v1/users/me/messages/' + m.id + '\n'
-        }
-      }),
+      multipart: body,
       headers: {
         'Authorization': 'Bearer ' + key,
         'content-type': 'multipart/mixed'
