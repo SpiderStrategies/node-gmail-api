@@ -1,0 +1,29 @@
+{
+  "name": "node-gmail-api",
+  "version": "0.1.0",
+  "description": "Interacts with the gmail api, fetching emails",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SpiderStrategies/node-gmail-api"
+  },
+  "keywords": [
+    "gmail",
+    "gmail-api"
+  ],
+  "author": "Nathan Bowser <nathan.bowser@spiderstrategies.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SpiderStrategies/node-gmail-api/issues"
+  },
+  "homepage": "https://github.com/SpiderStrategies/node-gmail-api",
+  "dependencies": {
+    "request": "^2.39.0",
+    "multiparty": "^3.3.1",
+    "split": "^0.3.0",
+    "stream-stream": "^1.2.6"
+  }
+}
