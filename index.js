@@ -17,9 +17,10 @@ var Gmail = function (key) {
  *
  * e.g. to search an inbox: gmail.messages('label:inbox')
  */
-Gmail.prototype.messages = function (q) {
+Gmail.prototype.messages = function (q, opts) {
   var key = this.key
     , result = ss()
+    , opts = opts || {}
 
   request({
     url: api + '/gmail/v1/users/me/messages',
@@ -32,7 +33,7 @@ Gmail.prototype.messages = function (q) {
     }
   }, function (err, response, body) {
     if (err) {
-      return next(err)
+      return result.emit('error', err)
     }
     var r = request({
       method: 'POST',
@@ -50,7 +51,7 @@ Gmail.prototype.messages = function (q) {
     })
 
     r.on('error', function (e) {
-      parser.emit('error', e)
+      result.emit('error', e)
     })
 
     r.on('response', function (res) {
