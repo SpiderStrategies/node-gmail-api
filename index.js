@@ -13,7 +13,8 @@ var Gmail = function (key) {
 }
 
 /*
- * Fetches email that matches the query. Returns a stream of messages
+ * Fetches email that matches the query. Returns a stream of messages with a max of 100 messages
+ * since the batch api sets a limit of 100.
  *
  * e.g. to search an inbox: gmail.messages('label:inbox')
  */
@@ -42,9 +43,7 @@ Gmail.prototype.messages = function (q, opts) {
       }
     })
 
-    if (opts.max) {
-      body.length = opts.max
-    }
+    body.length = opts.max || 100
 
     var r = request({
       method: 'POST',
