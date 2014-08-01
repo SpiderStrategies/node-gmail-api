@@ -20,7 +20,8 @@ var Gmail = function (key) {
  */
 Gmail.prototype.messages = function (q, opts) {
   var key = this.key
-    , result = ss()
+    , result = new Parser({objectMode: true})
+    , combined = ss()
     , opts = opts || {}
 
   request({
@@ -36,19 +37,21 @@ Gmail.prototype.messages = function (q, opts) {
     if (err) {
       return result.emit('error', err)
     }
-    var body = body.messages.map(function (m) {
+
+    var messages = body.messages.map(function (m) {
       return {
         'Content-Type': 'application/http',
         body: 'GET ' + api + '/gmail/v1/users/me/messages/' + m.id + '\n'
       }
     })
 
-    body.length = opts.max || 100
+    result.resultSizeEstimate = body.resultSizeEstimate
+    messages.length = opts.max || 100
 
     var r = request({
       method: 'POST',
       url: api + '/batch',
-      multipart: body,
+      multipart: messages,
       headers: {
         'Authorization': 'Bearer ' + key,
         'content-type': 'multipart/mixed'
@@ -66,12 +69,12 @@ Gmail.prototype.messages = function (q, opts) {
       res.headers['content-type'] = type.replace('multipart/mixed', 'multipart/related')
 
       form.on('part', function (part) {
-        result.write(part.pipe(split('\r\n')).pipe(new Parser))
+        combined.write(part.pipe(split('\r\n')).pipe(new Parser))
       }).parse(res)
     })
   })
 
-  return result.pipe(new Parser({objectMode: true}))
+  return combined.pipe(result)
 }
 
 module.exports = Gmail
