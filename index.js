@@ -69,10 +69,7 @@ Gmail.prototype.messages = function (q, opts) {
       res.headers['content-type'] = type.replace('multipart/mixed', 'multipart/related')
 
       form.on('part', function (part) {
-        var parser = new Parser
-          , splitter = split('\r\n')
-
-        combined.write(part.pipe(splitter).pipe(parser))
+        combined.write(part.pipe(split('\r\n')).pipe(new Parser))
       }).parse(res)
       form.on('close', function () {
         combined.end()
