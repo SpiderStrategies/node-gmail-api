@@ -38,6 +38,10 @@ Gmail.prototype.messages = function (q, opts) {
       return result.emit('error', err)
     }
 
+    if (body.error) {
+      return result.emit('error', new Error(body.error.message))
+    }
+
     var messages = body.messages.map(function (m) {
       return {
         'Content-Type': 'application/http',
