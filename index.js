@@ -12,20 +12,13 @@ var Gmail = function (key) {
   this.key = key
 }
 
-/*
- * Fetches email that matches the query. Returns a stream of messages with a max of 100 messages
- * since the batch api sets a limit of 100.
- *
- * e.g. to search an inbox: gmail.messages('label:inbox')
- */
-Gmail.prototype.messages = function (q, opts) {
-  var key = this.key
-    , result = new Parser({objectMode: true})
+var retrieve = function (key, q, endpoint, opts) {
+  var result = new Parser({objectMode: true})
     , combined = ss()
     , opts = opts || {}
 
   request({
-    url: api + '/gmail/v1/users/me/messages',
+    url: api + '/gmail/v1/users/me/' + endpoint,
     json: true,
     qs: {
       q: q
@@ -42,10 +35,10 @@ Gmail.prototype.messages = function (q, opts) {
       return result.emit('error', new Error(body.error.message))
     }
 
-    var messages = body.messages.map(function (m) {
+    var messages = body[endpoint].map(function (m) {
       return {
         'Content-Type': 'application/http',
-        body: 'GET ' + api + '/gmail/v1/users/me/messages/' + m.id + '\n'
+        body: 'GET ' + api + '/gmail/v1/users/me/' + endpoint + '/' + m.id + '\n'
       }
     })
 
@@ -67,6 +60,7 @@ Gmail.prototype.messages = function (q, opts) {
     })
 
     r.on('response', function (res) {
+      res.pipe(process.stdout)
       var type = res.headers['content-type']
         , form = new multiparty.Form
 
@@ -83,6 +77,20 @@ Gmail.prototype.messages = function (q, opts) {
   })
 
   return combined.pipe(result)
+}
+
+/*
+ * Fetches email that matches the query. Returns a stream of messages with a max of 100 messages
+ * since the batch api sets a limit of 100.
+ *
+ * e.g. to search an inbox: gmail.messages('label:inbox')
+ */
+Gmail.prototype.messages = function (q, opts) {
+  return retrieve(this.key, q, 'messages', opts)
+}
+
+Gmail.prototype.threads = function (q, opts) {
+  return retrieve(this.key, q, 'threads', opts)
 }
 
 module.exports = Gmail
