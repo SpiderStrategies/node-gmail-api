@@ -12,6 +12,28 @@ var Gmail = function (key) {
   this.key = key
 }
 
+var retrieveCount = function (key, q, endpoint, next) {
+  request({
+    url: api + '/gmail/v1/users/me/' + endpoint,
+    json: true,
+    qs: {
+      q: q,
+      fields: 'resultSizeEstimate'
+    },
+    headers: {
+      'Authorization': 'Bearer ' + key
+    }
+  }, function (err, response, body) {
+    if (err) {
+      return next(error)
+    }
+    if (body.error) {
+      return next(new Error(body.error.message))
+    }
+    return next(null, body.resultSizeEstimate)
+  })
+}
+
 var retrieve = function (key, q, endpoint, opts) {
   var result = new Parser({objectMode: true})
     , combined = ss()
@@ -80,6 +102,14 @@ var retrieve = function (key, q, endpoint, opts) {
 }
 
 /*
+ * Feteches the number of estimated messages matching the query
+ * Invokes callback with err and estimated number
+ */
+Gmail.prototype.estimatedMessages = function (q, next) {
+  return retrieveCount(this.key, q, 'messages', next)
+}
+
+/*
  * Fetches email that matches the query. Returns a stream of messages with a max of 100 messages
  * since the batch api sets a limit of 100.
  *
@@ -87,6 +117,14 @@ var retrieve = function (key, q, endpoint, opts) {
  */
 Gmail.prototype.messages = function (q, opts) {
   return retrieve(this.key, q, 'messages', opts)
+}
+
+/*
+ * Feteches the number of estimated threads matching the query
+ * Invokes callback with err and estimated number
+ */
+Gmail.prototype.estimatedThreads = function (q, next) {
+  return retrieveCount(this.key, q, 'threads', next)
 }
 
 Gmail.prototype.threads = function (q, opts) {
