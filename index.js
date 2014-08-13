@@ -57,6 +57,12 @@ var retrieve = function (key, q, endpoint, opts) {
       return result.emit('error', new Error(body.error.message))
     }
 
+    result.resultSizeEstimate = body.resultSizeEstimate
+
+    if (!result.resultSizeEstimate) {
+      return result.end()
+    }
+
     var messages = body[endpoint].map(function (m) {
       return {
         'Content-Type': 'application/http',
@@ -64,7 +70,6 @@ var retrieve = function (key, q, endpoint, opts) {
       }
     })
 
-    result.resultSizeEstimate = body.resultSizeEstimate
     messages.length = opts.max || 100
 
     var r = request({
