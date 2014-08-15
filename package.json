@@ -27,6 +27,7 @@
     "stream-stream": "^1.2.6"
   },
   "devDependencies": {
+    "nock": "^0.44.3",
     "tape": "^2.14.0"
   }
 }
