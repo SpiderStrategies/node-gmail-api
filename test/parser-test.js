@@ -7,10 +7,10 @@ test('parses objects as string, not object mode', function (t) {
   p.on('data', function (d) {
     t.equal(d.toString(), '{}')
     t.deepEqual(JSON.parse(d.toString()), {})
+    t.end()
   })
 
   p.write('{}')
-  t.end()
 })
 
 test('parses objects, object mode', function (t) {
@@ -18,8 +18,8 @@ test('parses objects, object mode', function (t) {
 
   p.on('data', function (d) {
     t.deepEqual(d, {})
+    t.end()
   })
 
   p.write('{}')
-  t.end()
 })
