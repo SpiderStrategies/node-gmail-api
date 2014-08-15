@@ -1,0 +1,163 @@
+--batch_RFDTlgf2e7I=_AAKkCViTkqc=
+Content-Type: application/http
+
+HTTP/1.1 200 OK
+ETag: "QLs4pSnnOYcKsc2Nteng63h1s-w/kGnvct-nOBGfxRQ4M_EUcz57R5E"
+Content-Type: application/json; charset=UTF-8
+Date: Fri, 15 Aug 2014 18:24:57 GMT
+Expires: Fri, 15 Aug 2014 18:24:57 GMT
+Cache-Control: private, max-age=0
+Content-Length: 4942
+
+{
+ "id": "147dae",
+ "historyId": "123",
+ "messages": [
+  {
+   "id": "147dae",
+   "threadId": "147dae",
+   "labelIds": [
+    "INBOX",
+    "CATEGORY_PERSONAL"
+   ],
+   "snippet": "This is a test email.",
+   "historyId": "123",
+   "payload": {
+    "mimeType": "multipart/alternative",
+    "filename": "",
+    "headers": [
+     {
+      "name": "Delivered-To",
+      "value": "nathan@foo.com"
+     },
+     {
+      "name": "Received",
+      "value": "by 10.66.11.229 with SMTP id t5csp59025pab;        Fri, 15 Aug 2014 11:21:29 -0700 (PDT)"
+     },
+     {
+      "name": "X-Received",
+      "value": "by 10.70.134.140 with SMTP id pk12mr11818608pdb.165.1408126888641;        Fri, 15 Aug 2014 11:21:28 -0700 (PDT)"
+     },
+     {
+      "name": "Return-Path",
+      "value": "\u003cnb@gmail.com\u003e"
+     },
+     {
+      "name": "Received",
+      "value": "from psmtp.com (exprod7mx237.postini.com [64.18.2.238])        by mx.google.com with SMTP id qp5si9574745pbc.42.2014.08.15.11.21.28        for \u003cnathan@foo.com\u003e;        Fri, 15 Aug 2014 11:21:28 -0700 (PDT)"
+     },
+     {
+      "name": "Received-SPF",
+      "value": "pass (google.com: domain of nb@gmail.com designates 74.125.82.50 as permitted sender) client-ip=74.125.82.50;"
+     },
+     {
+      "name": "Authentication-Results",
+      "value": "mx.google.com;       spf=pass (google.com: domain of nb@gmail.com designates 74.125.82.50 as permitted sender) smtp.mail=nb@gmail.com;       dkim=pass header.i=@gmail.com"
+     },
+     {
+      "name": "Received",
+      "value": "from mail-wg0-f50.google.com ([74.125.82.50]) (using TLSv1) by exprod7mx237.postini.com ([64.18.6.10]) with SMTP; Fri, 15 Aug 2014 14:21:28 EDT"
+     },
+     {
+      "name": "Received",
+      "value": "by mail-wg0-f50.google.com with SMTP id n12so2663996wgh.9        for \u003cnathan@foo.com\u003e; Fri, 15 Aug 2014 11:21:26 -0700 (PDT)"
+     },
+     {
+      "name": "DKIM-Signature",
+      "value": "v=1; a=rsa-sha256; c=relaxed/relaxed;        d=gmail.com; s=20120113;        h=mime-version:from:date:message-id:subject:to:content-type;        bh=InI1Ez8SoGcwqoAtiKI+9cHA8M7sc6pVe8RcESK/vE0=;        b=aElHpawJVfdznnn0+Pg9BJnDr6G/UTS/2gYYcaLAxOqIgmQJuskVJpDSu6W5eRRAI0         30V5rifXHLrG98Xm7MFC7AlNSnqQKmRzFlwydtztmDMQJY1MKcTKxhbsNr9nJAlgJl31         M0cEMW10ZJPL5kp8pXZ8GK72BHXgsbCiltSh1m43f2ewZbC/31ntRyzlzLFnsnQ1oFe4         d7FFe585iWZsJvmtR480aA0YR9a4nJ/AxKxdri1lm0YoQzAcSy7I3gC2eG7BgsrSy0vJ         WnhVT2oi01H7NLJ7EXk+B7LzEZ+BVokjIjJQTKTLFvDpesZXc8O0dduwykhNmM9k/k0k         MV6g=="
+     },
+     {
+      "name": "X-Received",
+      "value": "by 10.180.77.193 with SMTP id u1mr22820731wiw.45.1408126886582; Fri, 15 Aug 2014 11:21:26 -0700 (PDT)"
+     },
+     {
+      "name": "MIME-Version",
+      "value": "1.0"
+     },
+     {
+      "name": "Received",
+      "value": "by 10.216.200.201 with HTTP; Fri, 15 Aug 2014 11:21:05 -0700 (PDT)"
+     },
+     {
+      "name": "From",
+      "value": "Nathan Bowser \u003cnb@gmail.com\u003e"
+     },
+     {
+      "name": "Date",
+      "value": "Fri, 15 Aug 2014 14:21:05 -0400"
+     },
+     {
+      "name": "Message-ID",
+      "value": "\u003cCANn0XTC-RPhS=2jQ-B3uadmOoJ0r4XTUZFSE+0ONA3U+zjx5sg@mail.gmail.com\u003e"
+     },
+     {
+      "name": "Subject",
+      "value": "Testing"
+     },
+     {
+      "name": "To",
+      "value": "Nathan Bowser \u003cnathan@foo.com\u003e"
+     },
+     {
+      "name": "Content-Type",
+      "value": "multipart/alternative; boundary=f46d043d6759df9e970500af167a"
+     },
+     {
+      "name": "X-pstn-mail-from",
+      "value": "\u003cnb@gmail.com\u003e"
+     },
+     {
+      "name": "X-pstn-dkim",
+      "value": "1 skipped:not-enabled"
+     },
+     {
+      "name": "X-pstn-nxpr",
+      "value": "disp=neutral, envrcpt=nathan@foo.com"
+     },
+     {
+      "name": "X-pstn-nxp",
+      "value": "bodyHash=a49b32b297d5268dd7ce37746f80bfefb7c5074f, headerHash=0aac1d0ebc54a02939e1f7250b2c45457474b872, keyName=4, rcptHash=0358cfc489271652d17e2942689847646c100e40, sourceip=74.125.82.50, version=1"
+     }
+    ],
+    "body": {
+     "size": 0
+    },
+    "parts": [
+     {
+      "partId": "0",
+      "mimeType": "text/plain",
+      "filename": "",
+      "headers": [
+       {
+        "name": "Content-Type",
+        "value": "text/plain; charset=ISO-8859-1"
+       }
+      ],
+      "body": {
+       "size": 23,
+       "data": "VGhpcyBpcyBhIHRlc3QgZW1haWwuDQo="
+      }
+     },
+     {
+      "partId": "1",
+      "mimeType": "text/html",
+      "filename": "",
+      "headers": [
+       {
+        "name": "Content-Type",
+        "value": "text/html; charset=ISO-8859-1"
+       }
+      ],
+      "body": {
+       "size": 44,
+       "data": "PGRpdiBkaXI9Imx0ciI-VGhpcyBpcyBhIHRlc3QgZW1haWwuPC9kaXY-DQo="
+      }
+     }
+    ]
+   },
+   "sizeEstimate": 2989
+  }
+ ]
+}
+
+--batch_RFDTlgf2e7I=_AAKkCViTkqc=--
