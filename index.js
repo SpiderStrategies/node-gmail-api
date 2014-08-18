@@ -87,7 +87,6 @@ var retrieve = function (key, q, endpoint, opts) {
     })
 
     r.on('response', function (res) {
-      res.pipe(process.stdout)
       var type = res.headers['content-type']
         , form = new multiparty.Form
 
