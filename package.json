@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/SpiderStrategies/node-gmail-api",
   "dependencies": {
-    "request": "^2.39.0",
     "multiparty": "^3.3.1",
+    "request": "^2.40.0",
     "split": "^0.3.0",
     "stream-stream": "^1.2.6"
   },
