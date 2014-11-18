@@ -19,3 +19,7 @@ s.on('data', function (d) {
   console.log(d.snippet)
 })
 ```
+
+License
+=======
+ISC
