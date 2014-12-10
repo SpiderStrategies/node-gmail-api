@@ -12,7 +12,9 @@ Example
 
 ```
 // Fetch latest 10 emails and show the snippet
-var gmail = new Gmail(key)
+
+var Gmail = require('node-gmail-api')
+  , gmail = new Gmail(key)
   , s = gmail.messages('label:inbox', {max: 10})
 
 s.on('data', function (d) {
