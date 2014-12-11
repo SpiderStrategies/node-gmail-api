@@ -7,6 +7,11 @@ Why not the [google official library](https://github.com/google/google-api-nodej
 Which means fetching a bunch of email is insanely painful. This module exposes a function which will query the api searching for messages and hit the google
 batch api to fetch all the messages that are returned.
 
+To use this module, you'll need an oauth access token key. See more details here: https://developers.google.com/gmail/api/overview#auth_and_the_gmail_api
+
+We use [node-passport](https://github.com/jaredhanson/passport-google) to get an access key for a user, then use this module
+to make requests on behave of the authenticated user.
+
 Example
 =======
 
