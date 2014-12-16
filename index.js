@@ -12,10 +12,11 @@ var Gmail = function (key) {
   this.key = key
 }
 
-var retrieveCount = function (key, q, endpoint, next) {
+var retrieveCount = function (key, q, endpoint, opts, next) {
   request({
     url: api + '/gmail/v1/users/me/' + endpoint,
     json: true,
+    timeout: opts.timeout,
     qs: {
       q: q,
       fields: 'resultSizeEstimate'
@@ -42,6 +43,7 @@ var retrieve = function (key, q, endpoint, opts) {
   request({
     url: api + '/gmail/v1/users/me/' + endpoint,
     json: true,
+    timeout: opts.timeout,
     qs: {
       q: q
     },
@@ -76,6 +78,7 @@ var retrieve = function (key, q, endpoint, opts) {
       method: 'POST',
       url: api + '/batch',
       multipart: messages,
+      timeout: opts.timeout,
       headers: {
         'Authorization': 'Bearer ' + key,
         'content-type': 'multipart/mixed'
@@ -109,8 +112,12 @@ var retrieve = function (key, q, endpoint, opts) {
  * Feteches the number of estimated messages matching the query
  * Invokes callback with err and estimated number
  */
-Gmail.prototype.estimatedMessages = function (q, next) {
-  return retrieveCount(this.key, q, 'messages', next)
+Gmail.prototype.estimatedMessages = function (q, opts, next) {
+  if (!next) {
+    next = opts
+    opts = {}
+  }
+  return retrieveCount(this.key, q, 'messages', opts, next)
 }
 
 /*
@@ -127,8 +134,12 @@ Gmail.prototype.messages = function (q, opts) {
  * Feteches the number of estimated threads matching the query
  * Invokes callback with err and estimated number
  */
-Gmail.prototype.estimatedThreads = function (q, next) {
-  return retrieveCount(this.key, q, 'threads', next)
+Gmail.prototype.estimatedThreads = function (q, opts, next) {
+  if (!next) {
+    next = opts
+    opts = {}
+  }
+  return retrieveCount(this.key, q, 'threads', opts, next)
 }
 
 Gmail.prototype.threads = function (q, opts) {

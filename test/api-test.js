@@ -9,7 +9,7 @@ test('retrieves message count', function (t) {
     .reply(200, {resultSizeEstimate: 2})
 
   var gmail = new Gmail('key')
-  gmail.estimatedMessages('label:inbox', function (err, count) {
+  gmail.estimatedMessages('label:inbox', {timeout: 3000}, function (err, count) {
     t.equal(count, 2)
     t.end()
   })
