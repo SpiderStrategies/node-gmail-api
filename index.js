@@ -26,7 +26,7 @@ var retrieveCount = function (key, q, endpoint, opts, next) {
     }
   }, function (err, response, body) {
     if (err) {
-      return next(error)
+      return next(err)
     }
     if (body.error) {
       return next(new Error(body.error.message))
