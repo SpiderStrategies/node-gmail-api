@@ -9,8 +9,7 @@ batch api to fetch all the messages that are returned.
 
 To use this module, you'll need an oauth access token key. See more details here: https://developers.google.com/gmail/api/overview#auth_and_the_gmail_api
 
-We use [node-passport](https://github.com/jaredhanson/passport-google) to get an access key for a user, then use this module
-to make requests on behave of the authenticated user.
+We use [node-passport](https://github.com/jaredhanson/passport-google) to get an access key for a user, then use this module to make requests on behalf of the authenticated user.
 
 Example
 =======
