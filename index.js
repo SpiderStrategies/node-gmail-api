@@ -3,6 +3,7 @@ var request = require('request')
   , split = require('split')
   , multiparty = require('multiparty')
   , ss = require('stream-stream')
+  , through = require('through2')
   , api = 'https://www.googleapis.com'
 
 var Gmail = function (key) {
@@ -39,73 +40,84 @@ var retrieve = function (key, q, endpoint, opts) {
   var result = new Parser({objectMode: true})
     , combined = ss()
     , opts = opts || {}
+    , i = opts.max
 
-  request({
-    url: api + '/gmail/v1/users/me/' + endpoint,
-    json: true,
-    timeout: opts.timeout,
-    qs: {
-      q: q
-    },
-    headers: {
-      'Authorization': 'Bearer ' + key
-    }
-  }, function (err, response, body) {
-    if (err) {
-      return result.emit('error', err)
-    }
-
-    if (body.error) {
-      return result.emit('error', new Error(body.error.message))
-    }
-
-    result.resultSizeEstimate = body.resultSizeEstimate
-
-    if (!result.resultSizeEstimate) {
-      return result.end()
-    }
-
-    var messages = body[endpoint].map(function (m) {
-      return {
-        'Content-Type': 'application/http',
-        body: 'GET ' + api + '/gmail/v1/users/me/' + endpoint + '/' + m.id + '\n'
-      }
-    })
-
-    messages.length = opts.max || 100
-
-    var r = request({
-      method: 'POST',
-      url: api + '/batch',
-      multipart: messages,
+  var loop = function(page) {
+    var reqOpts = {
+      url: api + '/gmail/v1/users/me/' + endpoint,
+      json: true,
       timeout: opts.timeout,
+      qs: {
+        q: q
+      },
       headers: {
-        'Authorization': 'Bearer ' + key,
-        'content-type': 'multipart/mixed'
+        'Authorization': 'Bearer ' + key
       }
-    })
+    }
 
-    r.on('error', function (e) {
-      result.emit('error', e)
-    })
+    if (page) reqOpts.qs.pageToken = page
+    request(reqOpts, function (err, response, body) {
+      if (err) {
+        return result.emit('error', err)
+      }
 
-    r.on('response', function (res) {
-      var type = res.headers['content-type']
-        , form = new multiparty.Form
+      if (body.error) {
+        return result.emit('error', new Error(body.error.message))
+      }
 
-      res.headers['content-type'] = type.replace('multipart/mixed', 'multipart/related')
+      result.resultSizeEstimate = body.resultSizeEstimate
 
-      form.on('part', function (part) {
-        combined.write(part.pipe(split('\r\n')).pipe(new Parser))
-      }).parse(res)
-      form.on('close', function () {
-        combined.end()
+      if (!result.resultSizeEstimate) {
+        return result.end()
+      }
+      var messages = body[endpoint].map(function (m) {
+        return {
+          'Content-Type': 'application/http',
+          body: 'GET ' + api + '/gmail/v1/users/me/' + endpoint + '/' + m.id + '\n'
+        }
       })
 
+      messages.length = i < 100 ? i : 100
+
+      var r = request({
+        method: 'POST',
+        url: api + '/batch',
+        multipart: messages,
+        timeout: opts.timeout,
+        headers: {
+          'Authorization': 'Bearer ' + key,
+          'content-type': 'multipart/mixed'
+        }
+      })
+
+      r.on('error', function (e) {
+        result.emit('error', e)
+      })
+
+      r.on('response', function (res) {
+        var type = res.headers['content-type']
+          , form = new multiparty.Form
+
+        res.headers['content-type'] = type.replace('multipart/mixed', 'multipart/related')
+        form.on('part', function (part) {
+          combined.write(part.pipe(split('\r\n')).pipe(new Parser))
+        }).parse(res)
+        form.on('close', function () {
+          if (body.nextPageToken) return loop(body.nextPageToken)
+          combined.end()
+        })
+
+      })
     })
+  }
+  loop()
+
+  var counter = through(function(obj, enc, cb) {
+    i--
+    cb(null, obj)
   })
 
-  return combined.pipe(result)
+  return combined.pipe(counter).pipe(result)
 }
 
 /*
