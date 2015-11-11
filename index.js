@@ -4,6 +4,7 @@ var request = require('request')
   , multiparty = require('multiparty')
   , ss = require('stream-stream')
   , through = require('through2')
+  , querystring = require('querystring')
   , api = 'https://www.googleapis.com'
 
 var Gmail = function (key) {
@@ -55,6 +56,8 @@ var retrieve = function (key, q, endpoint, opts) {
       }
     }
 
+    var fields = opts.fields ? '?' + querystring.stringify({ fields: opts.fields.join(',')}) : ''
+
     if (page) reqOpts.qs.pageToken = page
     request(reqOpts, function (err, response, body) {
       if (err) {
@@ -71,10 +74,6 @@ var retrieve = function (key, q, endpoint, opts) {
         return result.end()
       }
       var messages = body[endpoint].map(function (m) {
-        var fields = '';
-        if(opts.fields) {
-          fields = '?' + querystring.stringify({ fields: opts.fields.join(',')});
-        }
         return {
           'Content-Type': 'application/http',
           body: 'GET ' + api + '/gmail/v1/users/me/' + endpoint + '/' + m.id + fields + '\n'
