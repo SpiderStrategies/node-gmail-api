@@ -71,9 +71,13 @@ var retrieve = function (key, q, endpoint, opts) {
         return result.end()
       }
       var messages = body[endpoint].map(function (m) {
+        var fields = '';
+        if(opts.fields) {
+          fields = '?' + querystring.stringify({ fields: opts.fields.join(',')});
+        }
         return {
           'Content-Type': 'application/http',
-          body: 'GET ' + api + '/gmail/v1/users/me/' + endpoint + '/' + m.id + '\n'
+          body: 'GET ' + api + '/gmail/v1/users/me/' + endpoint + '/' + m.id + fields + '\n'
         }
       })
 

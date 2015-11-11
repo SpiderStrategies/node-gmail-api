@@ -26,6 +26,20 @@ s.on('data', function (d) {
 })
 ```
 
+
+```
+// Optionally request the fields you want (for performance)
+// https://developers.google.com/gmail/api/guides/performance
+
+var Gmail = require('node-gmail-api')
+  , gmail = new Gmail(<KEY>)
+  , s = gmail.messages('label:inbox', { fields: ['id', 'internalDate', 'labelIds', 'payload']})
+
+s.on('data', function (d) {
+  console.log(d.id)
+})
+```
+
 License
 =======
 ISC
