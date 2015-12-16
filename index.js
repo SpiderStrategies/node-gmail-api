@@ -37,6 +37,22 @@ var retrieveCount = function (key, q, endpoint, opts, next) {
   })
 }
 
+var formQuery = function (query) {
+  var c = 0
+    , formedQuery = ''
+    
+  Object.keys(query).forEach(function(key) {       
+    if(query[key]) {
+      var params = {}
+      params[key] = query[key] instanceof Array ?  query[key].join(',') : query[key]
+      formedQuery += c == 0 ? '?' + querystring.stringify(params) : '&' + querystring.stringify(params)
+      c++
+    }   
+  })
+
+  return formedQuery
+}
+
 var retrieve = function (key, q, endpoint, opts) {
   var result = new Parser({objectMode: true})
     , combined = ss()
@@ -56,8 +72,7 @@ var retrieve = function (key, q, endpoint, opts) {
       }
     }
 
-    var fields = opts && opts.fields ? '?' + querystring.stringify({ fields: opts.fields.join(',')}) : ''
-    var format = opts && opts.format ? fields && fields != '' ? '&' + querystring.stringify({format: opts.format}) : '?' + querystring.stringify({format: opts.format}) : ''
+    var query = formQuery({fields : opts.fields, format : opts.format})
     
     if (page) reqOpts.qs.pageToken = page
     request(reqOpts, function (err, response, body) {
@@ -77,7 +92,7 @@ var retrieve = function (key, q, endpoint, opts) {
       var messages = body[endpoint].map(function (m) {
         return {
           'Content-Type': 'application/http',
-          body: 'GET ' + api + '/gmail/v1/users/me/' + endpoint + '/' + m.id + fields + format + '\n'
+          body: 'GET ' + api + '/gmail/v1/users/me/' + endpoint + '/' + m.id + query + '\n'
         }
       })
 
