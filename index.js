@@ -38,18 +38,17 @@ var retrieveCount = function (key, q, endpoint, opts, next) {
 }
 
 var formQuery = function (query) {
-  var c = 0
-    , formedQuery = ''
+  var formedQuery = '?'
+    , params = {}
     
   Object.keys(query).forEach(function(key) {       
     if(query[key]) {
-      var params = {}
-      params[key] = query[key] instanceof Array ?  query[key].join(',') : query[key]
-      formedQuery += c == 0 ? '?' + querystring.stringify(params) : '&' + querystring.stringify(params)
-      c++
+      params[key] = query[key] instanceof Array ?  query[key].join(',') : query[key]      
     }   
   })
-
+  
+  formedQuery += querystring.stringify(params)
+  
   return formedQuery
 }
 
