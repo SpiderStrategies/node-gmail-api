@@ -42,6 +42,7 @@ var retrieve = function (key, q, endpoint, opts) {
     , combined = ss()
     , opts = opts || {}
     , i = opts.max
+    , partsFound = 0
 
   var loop = function(page) {
     var reqOpts = {
@@ -103,10 +104,11 @@ var retrieve = function (key, q, endpoint, opts) {
 
         res.headers['content-type'] = type.replace('multipart/mixed', 'multipart/related')
         form.on('part', function (part) {
+          partsFound++;
           combined.write(part.pipe(split('\r\n')).pipe(new Parser))
         }).parse(res)
         form.on('close', function () {
-          if (body.nextPageToken) return loop(body.nextPageToken)
+          if (opts.max !== partsFound && body.nextPageToken) return loop(body.nextPageToken)
           combined.end()
         })
 
