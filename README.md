@@ -40,6 +40,19 @@ s.on('data', function (d) {
 })
 ```
 
+
+```
+// Optionally request the format you want (e.g full (default), raw, minimal, metadata)
+
+var Gmail = require('node-gmail-api')
+  , gmail = new Gmail(<KEY>)
+  , s = gmail.messages('label:inbox', {format: 'raw'})
+
+s.on('data', function (d) {
+  console.log(d.raw)
+})
+```
+
 License
 =======
 ISC
