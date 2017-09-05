@@ -12,6 +12,21 @@ To use this module, you'll need an oauth access token key. See more details here
 
 You may use [passport-google-oauth](https://github.com/jaredhanson/passport-google-oauth) to get an access key for a user, then use this module to make requests on behalf of the authenticated user.
 
+Example authentication call (cf. [passport-google-oauth](https://github.com/jaredhanson/passport-google-oauth) for more complete usage examples):
+
+````javascript
+passport.use(new GoogleStrategy({
+		clientID: config.googleApp.clientId
+		, clientSecret: config.googleApp.clientSecret
+		, userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo'
+		, callbackURL: config.baseurl + '/oauth2callback'
+	}
+	, function(accessToken, refreshToken, profile, done) {
+		// do your thing here
+	}
+))
+````
+
 Example
 =======
 
