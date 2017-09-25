@@ -65,7 +65,8 @@ var retrieve = function (key, q, endpoint, opts) {
       json: true,
       timeout: opts.timeout,
       qs: {
-        q: q
+        q: q,
+        maxResults: i < 100 ? i : 100
       },
       headers: {
         'Authorization': 'Bearer ' + key
@@ -95,8 +96,6 @@ var retrieve = function (key, q, endpoint, opts) {
           body: 'GET ' + api + '/gmail/v1/users/me/' + endpoint + '/' + m.id + query + '\n'
         }
       })
-
-      messages.length = i < 100 ? i : 100
 
       var r = request({
         method: 'POST',
