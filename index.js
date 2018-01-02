@@ -140,7 +140,7 @@ var retrieve = function (key, q, endpoint, opts) {
 }
 
 /*
- * Feteches the number of estimated messages matching the query
+ * Fetches the number of estimated messages matching the query
  * Invokes callback with err and estimated number
  */
 Gmail.prototype.estimatedMessages = function (q, opts, next) {
@@ -162,7 +162,7 @@ Gmail.prototype.messages = function (q, opts) {
 }
 
 /*
- * Feteches the number of estimated threads matching the query
+ * Fetches the number of estimated threads matching the query
  * Invokes callback with err and estimated number
  */
 Gmail.prototype.estimatedThreads = function (q, opts, next) {
