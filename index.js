@@ -124,6 +124,7 @@ var retrieve = function (key, q, endpoint, opts) {
         form.on('close', function () {
           if (opts.max !== partsFound && body.nextPageToken) return loop(body.nextPageToken)
           combined.end()
+          result.emit('done')
         })
 
       })
