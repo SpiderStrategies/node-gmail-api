@@ -1,6 +1,6 @@
 {
   "name": "node-gmail-api",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "description": "Interacts with the gmail api, fetching emails",
   "main": "index.js",
   "scripts": {
