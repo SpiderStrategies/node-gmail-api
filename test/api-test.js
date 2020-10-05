@@ -36,7 +36,7 @@ test('retrieves threads', function (t) {
     .replyWithFile(200, __dirname + '/initial.json')
 
   nock('https://www.googleapis.com')
-    .post('/batch')
+    .post('/batch/gmail/v1')
     .replyWithFile(200, __dirname + '/batched.json', {
       'content-type': 'multipart/mixed; boundary=batch_FmDEX85qSFQ=_AAlNL3-GN3E='
     })
