@@ -99,7 +99,7 @@ var retrieve = function (key, q, endpoint, opts) {
 
       var r = request({
         method: 'POST',
-        url: api + '/batch',
+        url: api + '/batch/gmail/v1',
         multipart: messages,
         timeout: opts.timeout,
         headers: {
